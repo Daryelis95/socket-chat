@@ -26,11 +26,11 @@ io.on('connection', (client) => {
     });
 
     // Escuchar evento de un usuario y emitir al resto
-    client.on('crearMensaje', (data) => {
+    client.on('crearMensaje', (data, callback) => {
         let persona = usuarios.getPersona( client.id );
         let mensaje = crearMensaje(persona.nombre, data.mensaje);
         client.broadcast.to(persona.sala).emit('crearMensaje', mensaje);
-
+        callback(mensaje);
     });
 
      // Escuchar evento de un usuario y un usuario especifico
