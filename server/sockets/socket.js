@@ -21,6 +21,7 @@ io.on('connection', (client) => {
         usuarios.agregarPersona(client.id, data.nombre, data.sala);
         //emitir a todas las pantallas listado de personas que pertenecen a la misma sala
         client.broadcast.to(data.sala).emit('listaPersona', usuarios.getPersonasSala(data.sala));
+        client.broadcast.to(data.sala).emit('crearMensaje', crearMensaje('Administrador',`${data.nombre} se unio al chat`));
 
         callback( usuarios.getPersonasSala(data.sala) );
     });
@@ -30,6 +31,7 @@ io.on('connection', (client) => {
         let persona = usuarios.getPersona( client.id );
         let mensaje = crearMensaje(persona.nombre, data.mensaje);
         client.broadcast.to(persona.sala).emit('crearMensaje', mensaje);
+
         callback(mensaje);
     });
 
